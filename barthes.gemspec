@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Barthes::VERSION
   spec.authors       = ["tily"]
   spec.email         = ["tily05@gmail.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.summary       = %q{lightweight scenario test framework}
+  spec.description   = %q{lightweight scenario test framework}
   spec.homepage      = ""
   spec.license       = "MIT"
 
