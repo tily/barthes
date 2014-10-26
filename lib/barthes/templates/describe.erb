@@ -1,0 +1,15 @@
+# coding: utf-8
+require 'json'
+
+describe '<%= name %>' do
+	before(:all) do
+		$store = {}
+		@env = JSON.parse File.read(ENV['BARTHES_ENV_PATH'])
+	end
+
+	<%= block.call %>
+
+	after(:all) do
+		File.write('.store', JSON.pretty_generate($store))
+	end
+end
