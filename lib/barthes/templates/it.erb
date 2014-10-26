@@ -1,21 +1,25 @@
 it '<%= name %>' do
-	<% if respond_to?(:max_loop) && max_loop.class == Integer && respond_to?(:expectations) && expectations.size > 0 %>
+	<% if respond_to?(:client) %>
+	client_klass = Object.const_get('<%= client['class'] %>')
+	client = client_klass.new(@env)
+	<% end %>
+	<% if respond_to?(:max_loop) && max_loop && respond_to?(:expectations) && expectations.size > 0 %>
 	<%= max_loop %>.times do
-		response = client.action('<%= params['Action'] %>',
+		response = client.execute({
 			<%- params.each do |k, v| %>
 			<% next if v.nil? %>
 			'<%= k %>' => <%= resolve_value(v) %>,
 			<%- end %>
 		})
 		<% if respond_to?(:expectations) && expectations.size > 0 %>
-		break if <%= block.call %>
+		break if (<%= block.call %>)
 		<% end %>
 		<% if _sleep %>
 		sleep <%= _sleep %> / 1000
 		<% end %>
 	end
 	<% end %>
-	response = client.action('<%= params['Action'] %>', {
+	response = client.execute({
 	<% params.each do |k, v| next if v.nil? # TODO %>
 		<% next if v.nil? %>
 		'<%= k %>' => <%= resolve_value(v) %>,

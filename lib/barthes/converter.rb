@@ -38,19 +38,22 @@ module Barthes
 		end
 
 		def walk_json(arr)
-			return if arr.nil?
+			return if arr.class != Array
 			rendered = []
-			arr.each do |elem|
-				case elem['type']
-				when 'It'
-					elem['_sleep'] = elem['sleep']
-					rendered << render(:it, 1, elem) do
-						walk_expectations(elem['expectations'], false).join(" && ")
-					end
-				when 'Context'
-					rendered << render(:context, 1, elem) do
-						walk_json(elem['children'])
-					end
+			case arr.first
+			when 'it'
+				arr.last['_sleep'] = arr.last['sleep']
+				arr.last['name'] = arr[1]
+				rendered << render(:it, 1, arr.last) do
+					walk_expectations(arr.last['expectations'], false).join(" && ")
+				end
+			when 'context'
+				rendered << render(:context, 1, :name => arr[1]) do
+					walk_json(arr.last)
+				end
+			else
+				arr.each do |elem|
+					rendered << walk_json(elem)
 				end
 			end
 			rendered.join("\n\t")
