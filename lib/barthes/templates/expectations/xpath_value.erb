@@ -1,5 +1,5 @@
 lambda {
-	doc = response.response.body.gsub(/xmlns=\"(.+?)\"/, '')
+	doc = Nokogiri::XML response.response.body.gsub(/xmlns=\"(.+?)\"/, '')
 	<% if respond_to?(:value) %>
 	doc.xpath('<%= xpath %>').text == <%= resolve_value(value) %>
 	<% end %>
