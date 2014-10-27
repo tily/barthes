@@ -7,12 +7,12 @@ module Barthes
 	class CLI < Thor
 		desc 'convert', 'convert json into rspec'
 		def convert(*paths)
-			files = expand_paths(paths, '.json')
+			files = expand_paths(paths, '_spec.json')
 			files.each do |file|
 				json = JSON.parse File.read(file)
 				converter = Barthes::Converter.new(file, json)
 				spec = converter.convert(json)
-				File.write("#{file.gsub(/.json$/, '')}_spec.rb", spec)
+				File.write(file.gsub(/.json$/, '.rb'), spec)
 			end
 		end
 
@@ -22,7 +22,7 @@ module Barthes
 		def exec(*paths)
 			ENV['BARTHES_ENV_PATH'] = options[:environment] if options[:environment]
 			convert(*paths)
-			paths = expand_paths(paths, '.json').map {|path| "#{path.gsub(/.json$/, '')}_spec.rb" }
+			paths = expand_paths(paths, '_spec.json').map {|path| path.gsub(/.json$/, '.rb') }
 			paths += options[:rspec].split(/\s/) if options[:rspec]
 			RSpec::Core::Runner.run(paths)
 		end
