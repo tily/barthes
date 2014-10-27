@@ -5,7 +5,7 @@ it '<%= name %>' do
 	<% end %>
 	<% if respond_to?(:max_loop) && max_loop && respond_to?(:expectations) && expectations.size > 0 %>
 	<%= max_loop %>.times do
-		response = client.execute({
+		response = @client.execute({
 			<%- params.each do |k, v| %>
 			<% next if v.nil? %>
 			'<%= k %>' => <%= resolve_value(v) %>,
@@ -19,7 +19,7 @@ it '<%= name %>' do
 		<% end %>
 	end
 	<% end %>
-	response = client.execute({
+	response = @client.execute({
 	<% params.each do |k, v| next if v.nil? # TODO %>
 		<% next if v.nil? %>
 		'<%= k %>' => <%= resolve_value(v) %>,
