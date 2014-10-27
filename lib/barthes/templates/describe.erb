@@ -5,6 +5,9 @@ describe '<%= name %>' do
 	before(:all) do
 		$store = {}
 		@env = JSON.parse File.read(ENV['BARTHES_ENV_PATH'])
+	end
+
+	before(:each) do
 		client_klass = Object.const_get(@env['client_class'])
 		@client = client_klass.new(@env)
 	end
