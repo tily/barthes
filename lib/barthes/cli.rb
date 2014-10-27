@@ -24,6 +24,7 @@ module Barthes
 			convert(*paths)
 			paths = expand_paths(paths, '_spec.json').map {|path| path.gsub(/.json$/, '.rb') }
 			paths += options[:rspec].split(/\s/) if options[:rspec]
+			paths += ['--fail-fast']
 			RSpec::Core::Runner.run(paths)
 		end
 
