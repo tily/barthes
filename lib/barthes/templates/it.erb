@@ -1,7 +1,8 @@
 it '<%= name %>' do
-	<% if respond_to?(:client) %>
-	client_klass = Object.const_get('<%= client['class'] %>')
-	client = client_klass.new(@env)
+	<% if respond_to?(:environment) && !environment.empty? %>
+	@env.update(<%= environment.inspect %>)
+	client_klass = Object.const_get(@env['client_class'])
+	@client = client_klass.new(@env)
 	<% end %>
 	<% if respond_to?(:max_loop) && max_loop && respond_to?(:expectations) && expectations.size > 0 %>
 	<%= max_loop %>.times do
