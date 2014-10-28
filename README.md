@@ -1,5 +1,7 @@
 # Barthes
 
+![](600px-Roland_Barthes_signature.svg.png)
+
 TODO: Write a gem description
 
 ## Installation
