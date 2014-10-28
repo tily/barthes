@@ -35,7 +35,7 @@ it '<%= name %>' do
 	sleep <%= _sleep %> / 1000
 	<% end %>
 	<% if respond_to?(:store) %>
-	doc = response.response.body.gsub(/xmlns=\"(.+?)\"/, '')
+	doc = Nokogiri::XML response.response.body.gsub(/xmlns=\"(.+?)\"/, '')
 	$store['<%= store['key'] %>'] = doc.xpath('<%= store['xpath'] %>').first.text
 	<% end %>
 end
