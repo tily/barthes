@@ -28,7 +28,7 @@ it '<%= name %>' do
 	<% if respond_to?(:expectations) && expectations.size > 0 %>
 	expect(
 		<%= block.call %>
-	).to be_true
+	).to eq(true)
 	<% end %>
 	<% if _sleep %>
 	sleep <%= _sleep %> / 1000
