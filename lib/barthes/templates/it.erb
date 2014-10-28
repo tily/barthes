@@ -34,6 +34,7 @@ it '<%= name %>' do
 	sleep <%= _sleep %> / 1000
 	<% end %>
 	<% if respond_to?(:store) %>
-	$store['<%= store['Key'] %>'] = doc.xpath('<%= store['Xpath'] %>').first.text
+	doc = response.response.body.gsub(/xmlns=\"(.+?)\"/, '')
+	$store['<%= store['key'] %>'] = doc.xpath('<%= store['xpath'] %>').first.text
 	<% end %>
 end
