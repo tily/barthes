@@ -68,8 +68,11 @@ module Barthes
 					rendered << walk_expectations(elem, in_or).join(" && ")
 				elsif elem.keys.first == 'Or'
 					rendered << walk_expectations(elem.values, true).join(' || ')
-				elsif elem['type'] == 'Value' || elem['type'] == 'StringComarison'
+				elsif elem['type'] == 'xpath_value'
 					rendered << render(:'expectations/xpath_value', 2, elem)
+					# TODO: =, !=, include, not include, begins with, not begin with, ends with, not end with
+				elsif elem['type'] == 'xpath_size'
+					rendered << render(:'expectations/xpath_size', 2, elem)
 				end
 			end
 			rendered
