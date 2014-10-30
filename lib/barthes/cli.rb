@@ -1,49 +1,14 @@
-require 'barthes/converter'
+require 'barthes/runner'
+require 'barthes/reporter/default'
 require 'json'
 require 'thor'
-require 'rspec'
 
 module Barthes
 	class CLI < Thor
-		desc 'convert', 'convert json into rspec'
-		def convert(*paths)
-			files = expand_paths(paths, '_spec.json')
-			files.each do |file|
-				json = JSON.parse File.read(file)
-				converter = Barthes::Converter.new(file, json)
-				spec = converter.convert(json)
-				File.write(file.gsub(/.json$/, '.rb'), spec)
-			end
-		end
-
 		desc 'exec', 'execute tests from json files'
-		option :rspec, :type => :string, :aliases => :r
 		option :environment, :type => :string, :aliases => :e 
 		def exec(*paths)
-			ENV['BARTHES_ENV_PATH'] = options[:environment] if options[:environment]
-			convert(*paths)
-			paths = expand_paths(paths, '_spec.json').map {|path| path.gsub(/.json$/, '.rb') }
-			paths += options[:rspec].split(/\s/) if options[:rspec]
-			paths += ['--fail-fast']
-			RSpec::Core::Runner.run(paths)
-		end
-
-		no_commands do
-			def expand_paths(paths, suffix)
-				files = []
-				if paths.empty?
-					files += Dir["./**/*#{suffix}"]
-				else
-					paths.each do |path|
-						if FileTest.directory?(path)
-							files += Dir["#{path}/**/*#{suffix}"]
-						elsif FileTest.file?(path)
-							files << path
-						end
-					end
-				end
-				files
-			end
+			Runner.new(options).run(paths)
 		end
 	end
 end
