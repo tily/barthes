@@ -9,6 +9,7 @@ module Barthes
 			load_config
 			load_environments(options[:environment])
 			@reporter = Reporter.new(options)
+			@options = options
 		end
 
 		def load_config
@@ -83,10 +84,15 @@ module Barthes
 	
 		def handle_action(action, scenarios)
 			env = @env.dup
-			env.update(action['env']) if action['env']
-			@reporter.report(:action, scenarios, action) do
-				result = Action.new(env).action(action)
-				result ? result : {result: true}
+			env.update(action['env']) if action[1]['env']
+			@reporter.report(:action, @num, action[1], action.last, scenarios) do
+				if @options[:dryrun]
+					[{result: true}]
+				else
+					results = Action.new(env).action(action.last)
+					@failed = true if results.any? {|r| r[:result] == false }
+					results
+				end
 			end
 		end
 	end
