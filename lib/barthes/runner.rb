@@ -69,7 +69,7 @@ module Barthes
 					walk_json(json.last, scenarios)
 					scenarios.pop
 				when 'action'
-					handle_action(json.last, scenarios)
+					handle_action(json, scenarios)
 					@num += 1
 				else
 					json.each do |element|
