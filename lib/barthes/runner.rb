@@ -44,10 +44,12 @@ module Barthes
 		def run(paths)
 			files = expand_paths(paths, '_spec.json')
 			@reporter.report(:run, files) do
+				@num = 1
 				results = []
 				files.each do |file|
 					json = JSON.parse File.read(file)
-					@reporter.report(:feature) do
+					@reporter.report(:feature, @num, json[1]) do
+						@num += 1
 						Barthes::Cache.reset
 						feature_results = walk_json(json.last, [file])
 						results += results
@@ -62,11 +64,13 @@ module Barthes
 				case json.first
 				when 'scenario'
 					handle_scenario(json, scenarios)
+					@num += 1
 					scenarios.push(json.first)
 					walk_json(json.last, scenarios)
 					scenarios.pop
 				when 'action'
 					handle_action(json.last, scenarios)
+					@num += 1
 				else
 					json.each do |element|
 						walk_json(element, scenarios)
@@ -76,7 +80,7 @@ module Barthes
 		end
 	
 		def handle_scenario(scenario, scenarios)
-			@reporter.report(:scenario, scenario, scenarios) do
+			@reporter.report(:scenario, @num, scenario[1], scenario.last, scenarios) do
 			end
 		end
 	
