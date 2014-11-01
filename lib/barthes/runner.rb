@@ -42,13 +42,11 @@ module Barthes
 		end
 
 		def run(paths)
-			# read environment
 			files = expand_paths(paths, '_spec.json')
 			@reporter.report(:run, files) do
 				results = []
 				files.each do |file|
 					json = JSON.parse File.read(file)
-					# validate feature key exists
 					@reporter.report(:feature) do
 						Barthes::Cache.reset
 						feature_results = walk_json(json.last, [file])
