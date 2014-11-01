@@ -62,7 +62,7 @@ module Barthes
 		def walk_json(json, scenarios)
 			if json.class == Array
 				case json.first
-				when 'context'
+				when 'scenario'
 					handle_scenario(json, scenarios)
 					scenarios.push(json.first)
 					walk_json(json.last, scenarios)
