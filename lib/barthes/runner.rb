@@ -6,10 +6,18 @@ require 'barthes/cache'
 module Barthes
 	class Runner
 		def initialize(options)
+			load_cache
 			load_config
 			load_environments(options[:environment])
 			@reporter = Reporter.new(options)
 			@options = options
+		end
+
+		def load_cache
+			path = Dir.pwd + '/barthes-cache.json'
+			if File.exists?(path)
+				Barthes::Cache.load JSON.parse File.read(path)
+			end
 		end
 
 		def load_config
@@ -50,13 +58,20 @@ module Barthes
 					json = JSON.parse File.read(file)
 					@reporter.report(:feature, @num, json[1]) do
 						@num += 1
-						Barthes::Cache.reset
+						#Barthes::Cache.reset ## load config or reset
 						feature_results = walk_json(json.last, [file])
 						results += results
 					end
 				end
 				results
 			end
+			puts JSON.pretty_generate Barthes::Cache.to_hash
+		end
+
+		def in_range?
+			flag = @num >= @options[:from]
+			flag = flag && (@num >= @options[:to]) if @options[:to]
+			flag
 		end
 	
 		def walk_json(json, scenarios)
@@ -69,7 +84,7 @@ module Barthes
 					walk_json(json.last, scenarios)
 					scenarios.pop
 				when 'action'
-					handle_action(json, scenarios)
+					handle_action(json, scenarios) if in_range?
 					@num += 1
 				else
 					json.each do |element|
@@ -80,21 +95,24 @@ module Barthes
 		end
 	
 		def handle_scenario(scenario, scenarios)
+			return if @failed
 			@reporter.report(:scenario, @num, scenario[1], scenario.last, scenarios) do
 			end
 		end
 	
 		def handle_action(action, scenarios)
+			return if @failed
+			name, content = action[1], action.last
 			env = @env.dup
-			env.update(action['env']) if action[1]['env']
-			@reporter.report(:action, @num, action[1], action.last, scenarios) do
-				if @options[:dryrun]
-					[{result: true}]
-				else
-					results = Action.new(env).action(action.last)
-					@failed = true if results.any? {|r| r[:result] == false }
-					results
+			env.update(content['environment']) if content['environment']
+			@reporter.report(:action, @num, name, action.last, scenarios) do
+				if !@options[:dryrun] && !@failed
+					content = Action.new(env, @options).action(content)
+					if content['expectations'] && content['expectations'].any? {|e| e['result'] == false }
+						@failed = true
+					end
 				end
+				content
 			end
 		end
 	end
