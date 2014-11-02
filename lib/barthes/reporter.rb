@@ -15,18 +15,17 @@ module Barthes
 		end
 
 		def report(event, *args, &block)
-			p 'report!!'
-			p @reporters
 			@reporters.each do |r|
 				m = :"before_#{event.to_s}"
 				r.send(m, *args) if r.respond_to?(m)
 			end
 	
 			result = yield
-	
+
 			@reporters.each do |r|
 				m = :"after_#{event.to_s}"
-				r.send(m, result, *args) if r.respond_to?(m)
+				args << result
+				r.send(m, *args) if r.respond_to?(m)
 			end
 		end
 	end
