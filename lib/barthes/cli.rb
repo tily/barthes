@@ -5,9 +5,12 @@ require 'thor'
 
 module Barthes
 	class CLI < Thor
-		desc 'exec', 'execute tests from json files'
+		desc 'execute', 'execute tests from json files'
 		option :environment, :type => :string, :aliases => :e 
+		option :verbose, :type => :boolean, :aliases => :v
 		option :dryrun, :type => :boolean, :aliases => :d
+		option :from, :type => :numeric, :aliases => :f, :default => 1
+		option :to, :type => :numeric, :aliases => :t
 		def exec(*paths)
 			Runner.new(options).run(paths)
 		end
