@@ -4,6 +4,10 @@ module Barthes
 		@cache = {}
 
 		class << self
+			def load(cache)
+                          @cache = cache
+			end
+
 			def reset
 				@cache = {}
 			end
@@ -14,6 +18,10 @@ module Barthes
 
 			def set(key, value)
 				@cache[key] = value
+			end
+
+			def to_hash
+				@cache
 			end
 		end
 	end
