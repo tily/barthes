@@ -19,13 +19,33 @@ module Barthes
 			end
 
 			def after_action(num, name, action, scenarios, result)
-				flag = ''
-				if result.empty? || result.all? {|r| r[:result] == true }
-					flag = 'OK'
-				else
-					flag = 'NG'
+				if @options[:verbose]
+					puts
+					puts indent scenarios.size + 1, "request:"
+					puts indent scenarios.size + 2, JSON.pretty_generate(action['request'])
+					puts indent scenarios.size + 1, "response:"
+					puts indent scenarios.size + 2, JSON.pretty_generate(action['response'])
 				end
-				puts " -> #{flag}"
+				expectations = result['expectations']
+				expectations.each do |expectation|
+					if expectation['result'] == false
+						puts indent scenarios.size + 1, "failed expectation:"
+						puts indent scenarios.size + 2, JSON.pretty_generate(expectation)
+					end
+				end
+				flag = ''
+				if expectations.empty? || expectations.all? {|r| r['result'] == true }
+					flag = 'success'
+				else
+					flag = 'failure'
+				end
+				puts indent(scenarios.size, " -> #{flag}")
+			end
+
+			def indent(num, string)
+				string.split("\n").map do |line|
+					("\t" * num) + line
+				end.join("\n")
 			end
 		end
 	end
