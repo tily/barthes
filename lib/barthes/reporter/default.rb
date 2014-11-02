@@ -2,6 +2,10 @@
 module Barthes
 	class Reporter
 		class Default
+			def initialize(options)
+				@options = options
+			end
+
 			def before_feature(num, name)
 				puts "#{name} (##{num})"
 			end

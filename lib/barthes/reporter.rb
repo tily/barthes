@@ -10,7 +10,7 @@ module Barthes
 					@reporters << klass.new
 				end
 			else
-				@reporters = [Reporter::Default.new]
+				@reporters = [Reporter::Default.new(options)]
 			end
 		end
 
