@@ -18,12 +18,11 @@ module Barthes
 			end
 
 			def before_action(num, name, action, scenarios)
-				print ("\t" * scenarios.size) + "#{name} (##{num})"
+				puts ("\t" * scenarios.size) + "#{name} (##{num})"
 			end
 
 			def after_action(num, name, action, scenarios, result)
 				if @options[:quiet] == 0
-					puts
 					puts indent scenarios.size + 1, "request:"
 					puts indent scenarios.size + 2, JSON.pretty_generate(action['request'])
 					puts indent scenarios.size + 1, "response:"
@@ -42,7 +41,7 @@ module Barthes
 				else
 					flag = red {'failure'}
 				end
-				puts indent(scenarios.size, " -> #{flag}")
+				puts indent(scenarios.size + 1, "result: #{flag}")
 			end
 
 			def indent(num, string)
