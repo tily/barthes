@@ -2,8 +2,7 @@ require 'barthes/cache'
 
 module Barthes
 	class Action
-		def initialize(env, options)
-			@options = options
+		def initialize(env)
 			@env = env.dup
 			client_class = Object.const_get(@env['client_class'])
 			@client = client_class.new(env)

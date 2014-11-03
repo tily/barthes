@@ -107,7 +107,7 @@ module Barthes
 			env.update(content['environment']) if content['environment']
 			@reporter.report(:action, @num, name, action.last, scenarios) do
 				if !Barthes::Config[:dryrun] && !@failed
-					content = Action.new(env, Barthes::Config).action(content)
+					content = Action.new(env).action(content)
 					if content['expectations'] && content['expectations'].any? {|e| e['result'] == false }
 						@failed = true
 					end
