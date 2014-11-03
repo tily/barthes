@@ -2,6 +2,7 @@ require 'json'
 require 'barthes/action'
 require 'barthes/reporter'
 require 'barthes/cache'
+require 'barthes/config'
 
 module Barthes
 	class Runner
@@ -10,7 +11,7 @@ module Barthes
 			load_config
 			load_envs(options[:env])
 			@reporter = Reporter.new(options)
-			@options = options
+			Barthes::Config.update(options)
 		end
 
 		def load_cache
@@ -68,8 +69,8 @@ module Barthes
 		end
 
 		def in_range?
-			flag = @num >= @options[:from]
-			flag = flag && (@num >= @options[:to]) if @options[:to]
+			flag = @num >= Barthes::Config[:from]
+			flag = flag && (@num >= Barthes::Config[:to]) if Barthes::Config[:to]
 			flag
 		end
 	
@@ -105,8 +106,8 @@ module Barthes
 			env = @env.dup
 			env.update(content['environment']) if content['environment']
 			@reporter.report(:action, @num, name, action.last, scenarios) do
-				if !@options[:dryrun] && !@failed
-					content = Action.new(env, @options).action(content)
+				if !Barthes::Config[:dryrun] && !@failed
+					content = Action.new(env, Barthes::Config).action(content)
 					if content['expectations'] && content['expectations'].any? {|e| e['result'] == false }
 						@failed = true
 					end
