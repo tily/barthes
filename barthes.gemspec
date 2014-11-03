@@ -25,4 +25,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "erubis"
   spec.add_dependency "slop"
   spec.add_dependency "term-ansicolor"
+  spec.add_dependency "activesupport"
 end
