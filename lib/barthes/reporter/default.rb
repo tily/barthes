@@ -18,7 +18,7 @@ module Barthes
 			end
 
 			def after_action(num, name, action, scenarios, result)
-				if Barthes::Config[:quiet] == 0
+				if Barthes::Config[:quiet] == 0 && Barthes::Config[:dryrun] == 0
 					puts indent scenarios.size + 1, "request:"
 					puts indent scenarios.size + 2, JSON.pretty_generate(action['request'])
 					puts indent scenarios.size + 1, "response:"
@@ -32,7 +32,9 @@ module Barthes
 					end
 				end
 				flag = ''
-				if expectations.empty? || expectations.all? {|r| r['result'] == true }
+				if Barthes::Config[:dryrun] > 0
+					flag = 'skipped'
+				elsif expectations.empty? || expectations.all? {|r| r['result'] == true }
 					flag = green {'success'}
 				else
 					flag = red {'failure'}
