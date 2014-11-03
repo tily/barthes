@@ -13,7 +13,7 @@ module Barthes
 		end
 
 		def action(action)
-			@env.update(action['environment']) if action['environment']
+			@env.update(action['env']) if action['env']
 			params = evaluate_params(action['params'])
 
 			if action['expectations']
