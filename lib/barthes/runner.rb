@@ -15,9 +15,8 @@ module Barthes
 		end
 
 		def load_cache
-			path = Dir.pwd + '/barthes-cache.json'
-			if File.exists?(path)
-				Barthes::Cache.load JSON.parse File.read(path)
+			if File.exists? Barthes::Config[:cache]
+				Barthes::Cache.load JSON.parse File.read Barthes::Config[:cache]
 			end
 		end
 
@@ -64,6 +63,9 @@ module Barthes
 					end
 				end
 				results
+			end
+			if !Barthes::Cache.to_hash.empty?
+				File.write Barthes::Config[:cache], JSON.pretty_generate(Barthes::Cache.to_hash) + "\n"
 			end
 		end
 
