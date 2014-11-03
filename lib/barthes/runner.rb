@@ -65,7 +65,6 @@ module Barthes
 				end
 				results
 			end
-			puts JSON.pretty_generate Barthes::Cache.to_hash
 		end
 
 		def in_range?
