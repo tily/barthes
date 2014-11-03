@@ -7,11 +7,11 @@ require 'barthes/config'
 module Barthes
 	class Runner
 		def initialize(options)
+			Barthes::Config.update(options)
 			load_cache
 			load_config
 			load_envs(options[:env])
-			@reporter = Reporter.new(options)
-			Barthes::Config.update(options)
+			@reporter = Reporter.new
 		end
 
 		def load_cache

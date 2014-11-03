@@ -5,10 +5,6 @@ module Barthes
 		class Default
 			include Term::ANSIColor
 
-			def initialize(options)
-				@options = options
-			end
-
 			def before_feature(num, name)
 				puts "#{name} (##{num})"
 			end
@@ -22,7 +18,7 @@ module Barthes
 			end
 
 			def after_action(num, name, action, scenarios, result)
-				if @options[:quiet] == 0
+				if Barthes::Config[:quiet] == 0
 					puts indent scenarios.size + 1, "request:"
 					puts indent scenarios.size + 2, JSON.pretty_generate(action['request'])
 					puts indent scenarios.size + 1, "response:"

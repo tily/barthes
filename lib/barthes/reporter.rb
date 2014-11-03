@@ -1,16 +1,15 @@
 
 module Barthes
 	class Reporter
-		def initialize(options)
+		def initialize
 			@reporters = []
-			if options[:reporter]
-				reporter_classes = options[:reporter].split(',')
-				reporter_classes.each do |klass_name|
+			if Barthes::Config[:reporters]
+				Barthes::Config[:reporters].each do |klass_name|
 					klass = Object.get_const(klass_name)
 					@reporters << klass.new
 				end
 			else
-				@reporters = [Reporter::Default.new(options)]
+				@reporters = [Reporter::Default.new]
 			end
 		end
 
