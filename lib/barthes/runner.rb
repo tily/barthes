@@ -9,7 +9,7 @@ module Barthes
 		def initialize(options)
 			Barthes::Config.update(options)
 			load_cache
-			load_config
+			load_libraries
 			load_envs(options[:env])
 			@reporter = Reporter.new
 		end
@@ -21,7 +21,7 @@ module Barthes
 			end
 		end
 
-		def load_config
+		def load_libraries
 			path = Dir.pwd + '/.barthes'
 			load path if File.exists?(path)
 		end
