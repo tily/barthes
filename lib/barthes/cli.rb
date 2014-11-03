@@ -15,6 +15,7 @@ module Barthes
 			  on 't', 'to',        'test number to stop to',               argument: :optional
 			  on 'l', 'load',      'An optional password',                 argument: :optional
 			  on 'd', 'dryrun',    'not run test but show just structure', argument: :optional
+			  on 'c', 'cache',     'cache path',                           argument: :optional, default: './barthes-cache.json'
 			  on 'r', 'reporters', 'reporters to use',                     argument: :optional, as: Array
 			end
 			@opt.to_hash
