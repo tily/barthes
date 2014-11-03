@@ -1,7 +1,10 @@
+require 'term/ansicolor'
 
 module Barthes
 	class Reporter
 		class Default
+			include Term::ANSIColor
+
 			def initialize(options)
 				@options = options
 			end
@@ -35,9 +38,9 @@ module Barthes
 				end
 				flag = ''
 				if expectations.empty? || expectations.all? {|r| r['result'] == true }
-					flag = 'success'
+					flag = green {'success'}
 				else
-					flag = 'failure'
+					flag = red {'failure'}
 				end
 				puts indent(scenarios.size, " -> #{flag}")
 			end
