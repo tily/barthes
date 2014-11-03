@@ -26,7 +26,6 @@ module Barthes
 
 			@reporters.each do |r|
 				m = :"after_#{event.to_s}"
-				args << result
 				r.send(m, *args) if r.respond_to?(m)
 			end
 		end

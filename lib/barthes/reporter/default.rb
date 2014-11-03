@@ -17,14 +17,14 @@ module Barthes
 				puts ("\t" * scenarios.size) + "#{name} (##{num})"
 			end
 
-			def after_action(num, name, action, scenarios, result)
+			def after_action(num, name, action, scenarios)
 				if Barthes::Config[:quiet] == 0 && Barthes::Config[:dryrun] == 0
 					puts indent scenarios.size + 1, "request:"
 					puts indent scenarios.size + 2, JSON.pretty_generate(action['request'])
 					puts indent scenarios.size + 1, "response:"
 					puts indent scenarios.size + 2, JSON.pretty_generate(action['response'])
 				end
-				expectations = result['expectations']
+				expectations = action['expectations']
 				expectations.each do |expectation|
 					if expectation['result'] == false
 						puts indent scenarios.size + 1, "failed expectation:"
