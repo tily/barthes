@@ -24,7 +24,7 @@ module Barthes
 					puts indent scenarios.size + 1, "response:"
 					puts indent scenarios.size + 2, JSON.pretty_generate(action['response'])
 				end
-				expectations = action['expectations']
+				expectations = action['expectations'] || []
 				expectations.each do |expectation|
 					if expectation['result'] == false
 						puts indent scenarios.size + 1, "failed expectation:"
