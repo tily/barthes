@@ -10,7 +10,7 @@ module Barthes
 			@opt = Slop.parse!(help: true) do
 			  banner 'Usage: barthes [options] /path/to/some_spec.json'
 			  on 'e', 'env',       'environment file paths',               argument: :optional, as: Array
-			  on 'q', 'quiet',     'not show test details',                argument: :optional
+			  on 'q', 'quiet',     'not show test details',                argument: :optional, as: :count
 			  on 'f', 'from',      'test number to start from',            argument: :optional, as: Integer, default: 1
 			  on 't', 'to',        'test number to stop to',               argument: :optional
 			  on 'l', 'load',      'An optional password',                 argument: :optional

@@ -22,7 +22,7 @@ module Barthes
 			end
 
 			def after_action(num, name, action, scenarios, result)
-				if !@options[:quiet]
+				if @options[:quiet] == 0
 					puts
 					puts indent scenarios.size + 1, "request:"
 					puts indent scenarios.size + 2, JSON.pretty_generate(action['request'])
