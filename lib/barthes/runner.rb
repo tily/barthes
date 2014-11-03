@@ -16,7 +16,7 @@ module Barthes
 
 		def load_cache
 			if File.exists? Barthes::Config[:cache]
-				Barthes::Cache.load JSON.parse File.read Barthes::Config[:cache]
+				Barthes::Cache.update JSON.parse File.read Barthes::Config[:cache]
 			end
 		end
 
@@ -57,15 +57,14 @@ module Barthes
 					json = JSON.parse File.read(file)
 					@reporter.report(:feature, @num, json[1]) do
 						@num += 1
-						#Barthes::Cache.reset ## load config or reset
 						feature_results = walk_json(json.last, [file])
 						results += results
 					end
 				end
 				results
 			end
-			if !Barthes::Cache.to_hash.empty?
-				File.write Barthes::Config[:cache], JSON.pretty_generate(Barthes::Cache.to_hash) + "\n"
+			if !Barthes::Cache.empty?
+				File.write Barthes::Config[:cache], JSON.pretty_generate(Barthes::Cache) + "\n"
 			end
 		end
 

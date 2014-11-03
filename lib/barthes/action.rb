@@ -48,7 +48,7 @@ module Barthes
 			if cache_config = action['cache']
 				value = @client.extract(cache_config, response)
 				action['cache']['value'] = value
-				Barthes::Cache.set(cache_config['key'], value)
+				Barthes::Cache[cache_config['key']] = value
 			end
 			action
 		end
@@ -58,7 +58,7 @@ module Barthes
 			params.each do |k, v|
 				if v.class == String
 					new_v = v.gsub(/\$\{(.+?)\}/) { @env[$1] }
-					new_v = new_v.gsub(/\@\{(.+?)\}/) { p $1; Barthes::Cache.get($1) }
+					new_v = new_v.gsub(/\@\{(.+?)\}/) { p $1; Barthes::Cache[$1] }
 				else
 					new_v = v
 				end
