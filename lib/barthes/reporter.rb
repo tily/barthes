@@ -1,3 +1,6 @@
+require 'barthes/reporter/default'
+require 'barthes/reporter/junit_xml'
+require 'active_support/inflector'
 
 module Barthes
 	class Reporter
@@ -5,7 +8,7 @@ module Barthes
 			@reporters = []
 			if Barthes::Config[:reporters]
 				Barthes::Config[:reporters].each do |klass_name|
-					klass = Object.get_const(klass_name)
+					klass = klass_name.constantize
 					@reporters << klass.new
 				end
 			else
