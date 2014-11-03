@@ -1,0 +1,3 @@
+module Barthes
+	Config = {}
+end
