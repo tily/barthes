@@ -8,7 +8,7 @@ module Barthes
 		def initialize(options)
 			load_cache
 			load_config
-			load_environments(options[:environment])
+			load_envs(options[:env])
 			@reporter = Reporter.new(options)
 			@options = options
 		end
@@ -25,9 +25,8 @@ module Barthes
 			load path if File.exists?(path)
 		end
 
-		def load_environments(environment)
+		def load_envs(env_paths)
 			@env = {}
-			env_paths = environment.split(',')
 			env_paths.each do |path|
 				@env.update JSON.parse File.read(path)
 			end
