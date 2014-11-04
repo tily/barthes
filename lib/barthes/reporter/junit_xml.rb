@@ -16,7 +16,17 @@ module Barthes
 						walk_json(feature)
 					end
 				end
-				puts Nokogiri::XML(result).to_xml(indent: 2)
+				xml = Nokogiri::XML(result).to_xml(indent: 2)
+				case @opts['output']
+				when nil, '$stdout'
+					$stdout.puts xml
+				when '$stderr'
+					$stderr.puts xml
+				else
+					File.open(@opts['output'], 'w') do |f|
+						f.puts xml
+					end
+				end
 			end
 
 			def walk_json(json, parents=[]) 
