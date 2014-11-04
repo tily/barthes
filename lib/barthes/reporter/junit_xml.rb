@@ -57,7 +57,20 @@ module Barthes
 						when 'skipped'
 							@xml.skipped
 						when 'failure'
+							failure = "failed expectations: \n"
+							expectations = action['expectations'] || []
+							expectations.each do |expectation|
+								if expectation['result'] == false
+									failure += JSON.pretty_generate(expectation) + "\n"
+								end
+							end
+							@xml.failure failure
 						when 'error'
+							error = "error:\n"
+							error += "class: #{json.last['error']['class']}\n"
+							error += "message: #{json.last['error']['message']}\n"
+							error += "backtrace: #{json.last['error']['backtrace'].join("\n")}\n"
+							@xml.error error
 						end
 						if json.last['status'] != 'skipped' && json.last['request'] && json.last['response']
 							stdout = "request:\n"
