@@ -20,7 +20,7 @@ module Barthes
 
 			def walk_json(json, parents=[]) 
 				case json.first
-				when 'feature', 'scenario'
+				when 'feature'
 					if json.last.class == Array
 						@xml.testsuite(name: json[1], tests: json.last.size) do
 							parents.push json[1]
@@ -29,6 +29,14 @@ module Barthes
 							end
 							parents.pop
 						end
+					end
+				when 'scenario'
+					if json.last.class == Array
+						parents.push json[1]
+						json.last.each do |child|
+							walk_json(child, parents)
+						end
+						parents.pop
 					end
 				when 'action'
 					# TODO: zero padding with calculation
