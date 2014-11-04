@@ -25,8 +25,16 @@ module Barthes
 				if Barthes::Config[:quiet] == 0 && Barthes::Config[:dryrun] == 0
 					puts indent scenarios.size + 1, "request:"
 					puts indent scenarios.size + 2, JSON.pretty_generate(action['request'])
-					puts indent scenarios.size + 1, "response:"
-					puts indent scenarios.size + 2, JSON.pretty_generate(action['response'])
+					if %w(success failure).include?(action['status'])
+						puts indent scenarios.size + 1, "response:"
+						puts indent scenarios.size + 2, JSON.pretty_generate(action['response'])
+					elsif action['status'] == 'error'
+						puts indent scenarios.size + 1, "error:"
+						puts indent scenarios.size + 2, "class: #{action['error']['class']}"
+						puts indent scenarios.size + 2, "message: #{action['error']['message']}"
+						puts indent scenarios.size + 2, "backtrace:"
+						puts indent scenarios.size + 3, action['error']['backtrace'].join("\n")
+					end
 				end
 				expectations = action['expectations'] || []
 				expectations.each do |expectation|
@@ -38,10 +46,10 @@ module Barthes
 				flag = ''
 				if Barthes::Config[:dryrun] > 0
 					flag = 'skipped'
-				elsif expectations.empty? || expectations.all? {|r| r['result'] == true }
-					flag = green {'success'}
+				elsif action['status'] == 'success'
+					flag = green { action['status'] }
 				else
-					flag = red {'failure'}
+					flag = red { action['status'] }
 				end
 				puts indent(scenarios.size + 1, "result: #{flag}")
 			end
