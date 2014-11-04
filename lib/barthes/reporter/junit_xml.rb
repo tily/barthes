@@ -18,19 +18,22 @@ module Barthes
 				puts Nokogiri::XML(result).to_xml(indent: 2)
 			end
 
-			def walk_json(json)
+			def walk_json(json, parents=[]) 
 				case json.first
 				when 'feature', 'scenario'
 					if json.last.class == Array
 						@xml.testsuite(name: json[1], tests: json.last.size) do
+							parents.push json[1]
 							json.last.each do |child|
-								walk_json(child)
+								walk_json(child, parents)
 							end
+							parents.pop
 						end
 					end
 				when 'action'
 					@xml.testsuite(name: json[1], tests: 1) do
-						@xml.testcase(name: json[1]) do
+						name = [parents, "##{json.last['number'].to_s} #{json[1]}"].join('.')
+						@xml.testcase(name: name) do
 							case json.last['status']
 							when 'skipped'
 								@xml.skipped
