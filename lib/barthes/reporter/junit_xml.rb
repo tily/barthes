@@ -71,11 +71,6 @@ module Barthes
 					puts json
 				end
 			end
-
-			def render_testcase(xml, action)
-				xml.testcase do
-				end
-			end
 		end
 	end
 end
