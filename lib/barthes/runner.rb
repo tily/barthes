@@ -108,6 +108,7 @@ module Barthes
 			env = @env.dup
 			env.update(content['env']) if content['env']
 			@reporter.report(:action, @num, name, action.last, scenarios) do
+				content['number'] = @num
 				if Barthes::Config[:dryrun] == 0 && !@failed
 					content = Action.new(env).action(content)
 					if content['expectations'] && content['expectations'].any? {|e| e['result'] == false }
