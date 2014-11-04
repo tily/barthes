@@ -7,9 +7,16 @@ module Barthes
 		def initialize
 			@reporters = []
 			if Barthes::Config[:reporters]
-				Barthes::Config[:reporters].each do |klass_name|
-					klass = klass_name.constantize
-					@reporters << klass.new
+				Barthes::Config[:reporters].each do |reporter|
+					if reporter.match(/^(.+)(\{.*\})$/)
+						klass_name, json_string = $1, $2
+						opts = JSON.parse(json_string)	
+						klass = klass_name.constantize
+						@reporters << klass.new(opts)
+					else
+						klass = reporter.constantize
+						@reporters << klass.new
+					end
 				end
 			else
 				@reporters = [Reporter::Default.new]

@@ -4,7 +4,8 @@ require 'nokogiri'
 module Barthes
 	class Reporter
 		class JunitXml
-			def initialize
+			def initialize(opts={})
+				@opts = opts
 				@xml = Builder::XmlMarkup.new
 				@xml.instruct! :xml, :version=>"1.0", :encoding=>"UTF-8"
 			end

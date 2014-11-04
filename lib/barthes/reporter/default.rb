@@ -5,6 +5,10 @@ module Barthes
 		class Default
 			include Term::ANSIColor
 
+			def initialize(opts={})
+				@opts = opts
+			end
+
 			def before_feature(num, name)
 				puts "#{name} (##{num})"
 			end
