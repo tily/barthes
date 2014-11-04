@@ -1,7 +1,6 @@
 require 'barthes/runner'
 require 'barthes/reporter/default'
 require 'json'
-require 'thor'
 require 'slop'
 
 module Barthes
