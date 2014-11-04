@@ -44,7 +44,7 @@ module Barthes
 						result = @client.compare(response, evaluate_params(expectation))
 						expectation.update(result)
 					end
-					if action['expectations'].all? {|e| e['result'] == true }
+					if !action['expectations'].all? {|e| e['result'] == true }
 						action['status'] = 'failure'
 					end
 				else
