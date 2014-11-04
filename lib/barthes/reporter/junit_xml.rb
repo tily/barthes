@@ -31,7 +31,8 @@ module Barthes
 						end
 					end
 				when 'action'
-					name = [parents, "##{json.last['number'].to_s} #{json[1]}"].join('.')
+					# TODO: zero padding with calculation
+					name = "##{sprintf('%03d', json.last['number'])} #{parents.join(' > ')} #{json[1]}"
 					@xml.testcase(name: name) do
 						case json.last['status']
 						when 'skipped'
