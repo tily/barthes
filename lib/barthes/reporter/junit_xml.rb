@@ -31,22 +31,20 @@ module Barthes
 						end
 					end
 				when 'action'
-					@xml.testsuite(name: json[1], tests: 1) do
-						name = [parents, "##{json.last['number'].to_s} #{json[1]}"].join('.')
-						@xml.testcase(name: name) do
-							case json.last['status']
-							when 'skipped'
-								@xml.skipped
-							when 'failure'
-							when 'error'
-							end
-							if json.last['status'] != 'skipped' && json.last['request'] && json.last['response']
-								stdout = "request:\n"
-								stdout += "#{JSON.pretty_generate(json.last['request'])}\n"
-								stdout += "response:\n"
-								stdout += "#{JSON.pretty_generate(json.last['response'])}\n"
-								@xml.tag!(:'system-out', stdout)
-							end
+					name = [parents, "##{json.last['number'].to_s} #{json[1]}"].join('.')
+					@xml.testcase(name: name) do
+						case json.last['status']
+						when 'skipped'
+							@xml.skipped
+						when 'failure'
+						when 'error'
+						end
+						if json.last['status'] != 'skipped' && json.last['request'] && json.last['response']
+							stdout = "request:\n"
+							stdout += "#{JSON.pretty_generate(json.last['request'])}\n"
+							stdout += "response:\n"
+							stdout += "#{JSON.pretty_generate(json.last['response'])}\n"
+							@xml.tag!(:'system-out', stdout)
 						end
 					end
 				else
