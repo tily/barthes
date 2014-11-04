@@ -16,6 +16,7 @@ module Barthes
 			  on 'd', 'dryrun',    'not run test but show just structure', argument: :optional, as: :count
 			  on 'c', 'cache',     'cache path',                           argument: :optional, default: './barthes-cache.json'
 			  on 'r', 'reporters', 'reporters to use',                     argument: :optional, as: Array
+			  on 'j', 'junit-xml', 'junit xml output path',                argument: :optional
 			end
 			@opt.to_hash
 		end
