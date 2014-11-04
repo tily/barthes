@@ -58,7 +58,7 @@ module Barthes
 			params.each do |k, v|
 				if v.class == String
 					new_v = v.gsub(/\$\{(.+?)\}/) { @env[$1] }
-					new_v = new_v.gsub(/\@\{(.+?)\}/) { p $1; Barthes::Cache[$1] }
+					new_v = new_v.gsub(/\@\{(.+?)\}/) { Barthes::Cache[$1] }
 				else
 					new_v = v
 				end
