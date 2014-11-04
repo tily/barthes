@@ -13,42 +13,56 @@ module Barthes
 		end
 
 		def action(action)
-			@env.update(action['env']) if action['env']
-			params = evaluate_params(action['params'])
+			begin
+				@env.update(action['env']) if action['env']
+				params = evaluate_params(action['params'])
 
-			if action['expectations']
-				if action['max_loop']
-					action['max_loop'].to_i.times do
-						sleep action['sleep'].to_i/1000 if action['sleep']	
+				if action['expectations']
+					if action['max_loop']
+						action['max_loop'].to_i.times do
+							sleep action['sleep'].to_i/1000 if action['sleep']	
 
-						response = @client.action(params)
-						action['expectations'].each do |expectation|
-							result = @client.compare(response, evaluate_params(expectation))
-							expectation.update(result)
-						end
-						if action['expectations'].all? {|e| e['result'] == true }
-							break
+							response = @client.action(params)
+							action['expectations'].each do |expectation|
+								result = @client.compare(response, evaluate_params(expectation))
+								expectation.update(result)
+							end
+							if action['expectations'].all? {|e| e['result'] == true }
+								break
+							end
 						end
 					end
 				end
-			end
 
-			sleep action['sleep'].to_i/1000 if action['sleep']	
+				sleep action['sleep'].to_i/1000 if action['sleep']	
 
-			action['request'] = params
-			action['response'] = response = @client.action(params)
+				action['request'] = params
+				action['response'] = response = @client.action(params)
 
-			if action['expectations']
-				action['expectations'].each do |expectation|
-					result = @client.compare(response, evaluate_params(expectation))
-					expectation.update(result)
+				if action['expectations']
+					action['expectations'].each do |expectation|
+						result = @client.compare(response, evaluate_params(expectation))
+						expectation.update(result)
+					end
+					if action['expectations'].all? {|e| e['result'] == true }
+						action['status'] = 'failure'
+					end
+				else
+					action['status'] = 'success'
 				end
-			end
 
-			if cache_config = action['cache']
-				value = @client.extract(cache_config, response)
-				action['cache']['value'] = value
-				Barthes::Cache[cache_config['key']] = value
+				if cache_config = action['cache']
+					value = @client.extract(cache_config, response)
+					action['cache']['value'] = value
+					Barthes::Cache[cache_config['key']] = value
+				end
+			rescue StandardError => e
+				action['status'] = 'error'
+				action['error'] = {
+					'class' => e.class,
+					'message' => e.message,
+					'backtrace' => e.backtrace
+				}
 			end
 			action
 		end
