@@ -111,9 +111,7 @@ module Barthes
 				content['number'] = @num
 				if Barthes::Config[:dryrun] == 0 && !@failed
 					content = Action.new(env).action(content)
-					if content['expectations'] && content['expectations'].any? {|e| e['result'] == false }
-						@failed = true
-					end
+					@failed = true if %w(failure error).include?(content['status'])
 				end
 				content['status'] = 'skipped' if Barthes::Config[:dryrun] > 0
 				content
