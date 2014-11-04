@@ -39,13 +39,15 @@ module Barthes
 				action['request'] = params
 				action['response'] = response = @client.action(params)
 
-				if action['expectations']
+				if action['expectations'] && !action['expectations'].empty?
 					action['expectations'].each do |expectation|
 						result = @client.compare(response, evaluate_params(expectation))
 						expectation.update(result)
 					end
 					if !action['expectations'].all? {|e| e['result'] == true }
 						action['status'] = 'failure'
+					else
+						action['status'] = 'success'
 					end
 				else
 					action['status'] = 'success'
