@@ -10,15 +10,15 @@ module Barthes
 			end
 
 			def before_feature(num, name)
-				puts "#{name} (##{num})"
+				puts name
 			end
 
 			def before_scenario(num, name, scenario, scenarios)
-				puts ("\t" * scenarios.size) + "#{name} (##{num})"
+				puts ("\t" * scenarios.size) + name
 			end
 
 			def before_action(num, name, action, scenarios)
-				puts ("\t" * scenarios.size) + "#{name} (##{num})"
+				puts ("\t" * scenarios.size) + "##{num} #{name}"
 			end
 
 			def after_action(num, name, action, scenarios)
