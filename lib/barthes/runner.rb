@@ -71,7 +71,7 @@ module Barthes
 
 		def in_range?
 			flag = @num >= Barthes::Config[:from]
-			flag = flag && (@num >= Barthes::Config[:to]) if Barthes::Config[:to]
+			flag = flag && (@num <= Barthes::Config[:to]) if Barthes::Config[:to]
 			flag
 		end
 	

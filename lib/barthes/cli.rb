@@ -11,7 +11,7 @@ module Barthes
 			  on 'e', 'env',       'environment file paths',               argument: :optional, as: Array
 			  on 'q', 'quiet',     'not show test details',                argument: :optional, as: :count
 			  on 'f', 'from',      'test number to start from',            argument: :optional, as: Integer, default: 1
-			  on 't', 'to',        'test number to stop to',               argument: :optional
+			  on 't', 'to',        'test number to stop to',               argument: :optional, as: Integer
 			  on 'l', 'load',      'An optional password',                 argument: :optional
 			  on 'd', 'dryrun',    'not run test but show just structure', argument: :optional, as: :count
 			  on 'c', 'cache',     'cache path',                           argument: :optional, default: './barthes-cache.json'
