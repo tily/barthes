@@ -10,6 +10,7 @@ module Barthes
 			Barthes::Config.update(options)
 			load_cache
 			load_libraries
+			@env = {}
 			load_envs(options[:env]) if options[:env]
 			@reporter = Reporter.new
 		end
@@ -26,7 +27,6 @@ module Barthes
 		end
 
 		def load_envs(env_paths)
-			@env = {}
 			env_paths.each do |path|
 				@env.update JSON.parse File.read(path)
 			end
