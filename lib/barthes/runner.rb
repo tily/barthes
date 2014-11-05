@@ -10,7 +10,7 @@ module Barthes
 			Barthes::Config.update(options)
 			load_cache
 			load_libraries
-			load_envs(options[:env])
+			load_envs(options[:env]) if options[:env]
 			@reporter = Reporter.new
 		end
 
