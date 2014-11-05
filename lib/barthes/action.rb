@@ -1,11 +1,12 @@
 require 'barthes/cache'
+require 'barthes/client/httparty'
 require 'chronic'
 
 module Barthes
 	class Action
 		def initialize(env)
 			@env = env.dup
-			client_class = Object.const_get(@env['client_class'])
+			client_class = @env['client_class'] ? @env['client_class'].constantize : Barthes::Client::HTTParty
 			@client = client_class.new(env)
 		end
 
