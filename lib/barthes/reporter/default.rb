@@ -59,6 +59,31 @@ module Barthes
 					("\t" * num) + line
 				end.join("\n")
 			end
+
+			def after_run(features)
+				@count = Hash.new(0)
+				walk_json(features)
+				puts '-' * 80
+				puts [
+					"all: #{@count['all'].to_s }",
+					"success: #{@count['success'] > 0 ? green { @count['success'].to_s } : @count['success'].to_s }",
+					"failure: #{@count['failure'] > 0 ? red { @count['failure'].to_s }   : @count['failure'].to_s }",
+					"error: #{@count['error'] > 0 ? red { @count['error'].to_s } : @count['error'].to_s }",
+					"skipped: #{@count['skipped'].to_s }"
+				].join(", ")
+			end
+
+			def walk_json(obj)
+				case obj.first
+				when 'feature', 'scenario'
+					walk_json(obj.last)
+				when 'action'
+					@count['all'] += 1
+					@count[obj.last['status']] += 1
+				else
+					obj.each {|obj2| walk_json(obj2) }
+				end
+			end
 		end
 	end
 end
