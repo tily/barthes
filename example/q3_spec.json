@@ -1,0 +1,66 @@
+["feature", "Q3", [
+  ["scenario", "CreateQueue", [
+    ["action", "create queue with CreateQueue API", {
+      "params": {
+        "Action": "CreateQueue",
+        "QueueName": "takeuchitest"
+      },
+      "expectations": [
+        {
+          "type": "response_code",
+          "value": 200
+        },
+        {
+          "type": "xpath_value",
+          "xpath": "//CreateQueueResponse/CreateQueueResult/QueueUrl",
+          "value": "http://q3-global.herokuapp.com/*/takeuchitest"
+        }
+      ]
+    }],
+    ["action", "check if that queue is created with ListQueues API", {
+      "params": {
+        "Action": "ListQueues"
+      },
+      "expectations": [
+        {
+          "type": "response_code",
+          "value": 200
+        },
+        {
+          "type": "xpath_value",
+          "xpath": "ListQueuesResponse/ListQueuesResult/QueueUrl[1]",
+          "value": "http://q3-global.herokuapp.com/*/takeuchitest"
+        }
+      ]
+    }],
+    ["action", "send message to that queue with SendMessage API", {
+      "params": {
+        "Action": "SendMessage",
+        "MessageBody": "hello barthes"
+      },
+      "env": {
+        "path": "/*/takeuchitest"
+      },
+      "expectations": [
+        {
+          "type": "response_code",
+          "value": 200
+        }
+      ]
+    }],
+    ["action", "receive message from that queue with ReceiveMessage API", {
+      "params": {
+        "Action": "ReceiveMessage"
+      },
+      "env": {
+        "path": "/*/takeuchitest"
+      },
+      "expectations": [
+        {
+          "type": "response_code",
+          "value": 200
+        }
+      ]
+    }]
+  ]]
+]]
