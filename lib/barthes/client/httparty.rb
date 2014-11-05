@@ -45,6 +45,9 @@ module Barthes
 			end
 
 			def extract(config, response)
+				if config['xpath']
+					xpath(response, config['xpath']).text
+				end
 			end
 
 			def xpath(response, xpath)
