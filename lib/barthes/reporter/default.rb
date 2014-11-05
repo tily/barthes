@@ -9,19 +9,19 @@ module Barthes
 				@opts = opts
 			end
 
-			def before_feature(num, name)
+			def before_feature(name)
 				puts name
 			end
 
-			def before_scenario(num, name, scenario, scenarios)
+			def before_scenario(name, scenario, scenarios)
 				puts ("\t" * scenarios.size) + name
 			end
 
-			def before_action(num, name, action, scenarios)
-				puts ("\t" * scenarios.size) + "##{num} #{name}"
+			def before_action(name, action, scenarios)
+				puts ("\t" * scenarios.size) + "##{action['number']} #{name}"
 			end
 
-			def after_action(num, name, action, scenarios)
+			def after_action(name, action, scenarios)
 				if Barthes::Config[:quiet] == 0 && Barthes::Config[:dryrun] == 0
 					puts indent scenarios.size + 1, "request:"
 					puts indent scenarios.size + 2, JSON.pretty_generate(action['request'])
