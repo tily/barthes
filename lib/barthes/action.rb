@@ -75,7 +75,7 @@ module Barthes
 			params.each do |k, v|
 				if v.class == String
 					new_v = v.gsub(/\$\{time:(.+?):(.+?)\}/) { Chronic.parse($1).strftime($2) }
-					new_v = new_v.gsub(/\$\{(.+?)\}/) { p $1; @env[$1] }
+					new_v = new_v.gsub(/\$\{(.+?)\}/) { @env[$1] }
 					new_v = new_v.gsub(/\@\{(.+?)\}/) { Barthes::Cache[$1] }
 				else
 					new_v = v
