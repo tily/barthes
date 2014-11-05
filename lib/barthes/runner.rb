@@ -55,8 +55,7 @@ module Barthes
 				@num = 1
 				files.each do |file|
 					json = JSON.parse File.read(file)
-					@reporter.report(:feature, @num, json[1]) do
-						@num += 1
+					@reporter.report(:feature, json[1]) do
 						walk_json(json.last, [file])
 						results << json
 						json
@@ -84,6 +83,8 @@ module Barthes
 					walk_json(json.last, scenarios)
 					scenarios.pop
 				when 'action'
+					json.last['status'] = 'skipped' if Barthes::Config[:dryrun] > 0
+					json.last['number'] = @num
 					handle_action(json, scenarios) if in_range?
 					@num += 1
 				else
@@ -96,7 +97,7 @@ module Barthes
 	
 		def handle_scenario(scenario, scenarios)
 			return if @failed
-			@reporter.report(:scenario, @num, scenario[1], scenario.last, scenarios) do
+			@reporter.report(:scenario, scenario[1], scenario.last, scenarios) do
 				scenario.last
 			end
 		end
@@ -106,13 +107,11 @@ module Barthes
 			name, content = action[1], action.last
 			env = @env.dup
 			env.update(content['env']) if content['env']
-			@reporter.report(:action, @num, name, action.last, scenarios) do
-				content['number'] = @num
+			@reporter.report(:action, name, action.last, scenarios) do
 				if Barthes::Config[:dryrun] == 0 && !@failed
 					content = Action.new(env).action(content)
 					@failed = true if %w(failure error).include?(content['status'])
 				end
-				content['status'] = 'skipped' if Barthes::Config[:dryrun] > 0
 				content
 			end
 		end
