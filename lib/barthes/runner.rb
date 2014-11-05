@@ -80,7 +80,6 @@ module Barthes
 				case json.first
 				when 'scenario'
 					handle_scenario(json, scenarios)
-					@num += 1
 					scenarios.push(json.first)
 					walk_json(json.last, scenarios)
 					scenarios.pop
