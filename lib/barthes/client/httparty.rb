@@ -8,6 +8,14 @@ module Barthes
 
 			def initialize(env)
 				@env = env
+				set_proxy
+			end
+
+			def set_proxy
+				if proxy_uri = ENV['HTTP_PROXY']
+					uri = URI.parse(proxy_uri)
+					self.class.http_proxy uri.host, uri.port
+				end
 			end
 
 			def action(params)
