@@ -29,4 +29,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "nokogiri"
   spec.add_dependency "chronic"
   spec.add_dependency "httparty", "0.10.0"
+  spec.add_dependency "builder"
 end
