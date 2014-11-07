@@ -20,6 +20,7 @@ module Barthes
 
 			def action(params)
 				url = @env['path'] ? @env['endpoint'] + @env['path'] : @env['endpoint']
+				headers = @env['header'] ? @env['header'] : {}
 				self.class.post(url, query: params)
 			end
 
