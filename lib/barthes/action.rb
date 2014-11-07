@@ -7,7 +7,7 @@ module Barthes
 		def initialize(env)
 			@env = env.dup
 			client_class = @env['client_class'] ? @env['client_class'].constantize : Barthes::Client::HTTParty
-			@client = client_class.new(env)
+			@client = client_class.new(evalute_params env)
 		end
 
 		def indent(size, string)
