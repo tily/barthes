@@ -21,6 +21,7 @@ module Barthes
 			def action(params)
 				url = @env['path'] ? @env['endpoint'] + @env['path'] : @env['endpoint']
 				headers = @env['header'] ? @env['header'] : {}
+				# TODO: method
 				self.class.post(url, query: params)
 			end
 
@@ -46,6 +47,12 @@ module Barthes
 						result = (size == expectation['value'])
 					elsif expectation['method'] == 'gt'
 						result = (size > expectation['value'])
+					elsif expectation['method'] == 'gte'
+						result = (size >= expectation['value'])
+					elsif expectation['method'] == 'lt'
+						result = (size < expectation['value'])
+					elsif expectation['method'] == 'lte'
+						result = (size <= expectation['value'])
 					end
 					{'result' => result, 'returned' => size, 'expected' => expectation['value']}
 				else
