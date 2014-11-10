@@ -24,8 +24,8 @@ module Barthes
 			def after_action(name, action, scenarios)
 				if Barthes::Config[:quiet] == 0 && Barthes::Config[:dryrun] == 0
 					puts indent scenarios.size + 1, "request:"
-					puts indent scenarios.size + 2, JSON.pretty_generate(action['request'])
-					if %w(success failure).include?(action['status'])
+					puts indent scenarios.size + 2, JSON.pretty_generate(action['request']) if action['request']
+					if %w(success failure).include?(action['status']) && action['response']
 						puts indent scenarios.size + 1, "response:"
 						puts indent scenarios.size + 2, JSON.pretty_generate(action['response'])
 					elsif action['status'] == 'error'
