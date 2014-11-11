@@ -11,6 +11,7 @@ end
 		EOF
 	end
 	system "git add lib/barthes/version.rb"
+	system "git tag v#{version} -m v#{version}"
 	system "git commit -m 'version up to #{version}'"
 	system "git push origin master"
 	system "git push --tags"
