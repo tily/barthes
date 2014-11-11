@@ -56,7 +56,7 @@ module Barthes
 				end
 
 				if cache_config = action['cache']
-					value = @client.extract(cache_config, response)
+					value = @client.extract(evaluate_params(cache_config), response)
 					action['cache']['value'] = value
 					Barthes::Cache[cache_config['key']] = value
 				end
