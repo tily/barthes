@@ -27,9 +27,9 @@
           "value": 200
         },
         {
-          "type": "xpath_value",
-          "xpath": "ListQueuesResponse/ListQueuesResult/QueueUrl[1]",
-          "value": "http://q3-global.herokuapp.com/*/tilytest"
+          "type": "xpath_size",
+          "xpath": "ListQueuesResponse/ListQueuesResult/QueueUrl[text()='http://q3-global.herokuapp.com/*/tilytest']",
+          "value": 1
         }
       ]
     }],
