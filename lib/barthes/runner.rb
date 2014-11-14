@@ -66,6 +66,7 @@ module Barthes
 			if !Barthes::Cache.empty?
 				File.write Barthes::Config[:cache], JSON.pretty_generate(Barthes::Cache) + "\n"
 			end
+			exit @failed ? 1 : 0
 		end
 
 		def in_range?
