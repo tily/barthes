@@ -76,6 +76,12 @@ module Barthes
 			params.each do |k, v|
 				if v.class == String
 					new_v = v.gsub(/\$\{time:(.+?):(.+?)\}/) { Chronic.parse($1).strftime($2) }
+					new_v = v.gsub(/^\$\{base64:(.+)\}$/) do
+						match = $1
+						match = match.gsub(/\$\{(.+?)\}/) { @env[$1] }
+						match = match.gsub(/\@\{(.+?)\}/) { Barthes::Cache[$1] }
+						Base64.encode64(match)
+					end
 					new_v = new_v.gsub(/\$\{(.+?)\}/) { @env[$1] }
 					new_v = new_v.gsub(/\@\{(.+?)\}/) { Barthes::Cache[$1] }
 				else
