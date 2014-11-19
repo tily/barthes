@@ -33,6 +33,7 @@ class Barthes::Client::Ace < Barthes::Client::HTTParty
 	def initialize(env)
 		# TODO: validate existence of required options
 		@options = env.slice(*OPTION_KEYS).symbolize_keys
+		@options[:http_method] = @options[:http_method].downcase.to_sym if @options[:http_method]
 		if env['client'] && env['client']['user']
 			@user = env['client']['user']
 			@options[:access_key_id] = env["#{@user}.access_key_id"]
