@@ -37,7 +37,6 @@ class Barthes::Client::Ace < Barthes::Client::HTTParty
 			@user = env['client']['user']
 			@options[:access_key_id] = env["#{@user}.access_key_id"]
 			@options[:secret_access_key] = env["#{@user}.secret_access_key"]
-			@options.update(env['client'].slice(*OPTION_KEYS).symbolize_keys)
 		end
 	end
 
