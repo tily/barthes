@@ -30,4 +30,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "chronic"
   spec.add_dependency "httparty", "0.10.0"
   spec.add_dependency "builder"
+  spec.add_dependency "ace-client", "0.0.15"
 end
