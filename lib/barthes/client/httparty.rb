@@ -22,7 +22,7 @@ module Barthes
 				url = @env['path'] ? @env['endpoint'] + @env['path'] : @env['endpoint']
 				headers = @env['header'] ? @env['header'] : {}
 				# TODO: method
-				self.class.post(url, query: params)
+				self.class.post(url, query: params, headers: headers)
 			end
 
 			def compare(response, expectation)
