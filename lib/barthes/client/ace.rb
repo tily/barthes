@@ -28,6 +28,7 @@ class Barthes::Client::Ace < Barthes::Client::HTTParty
 		access_key_id
 		secret_access_key
 		timeout
+		headers
 	)
 
 	def initialize(env)
