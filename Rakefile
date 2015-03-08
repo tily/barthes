@@ -2,19 +2,17 @@ require "bundler/gem_tasks"
 
 desc 'vup'
 task :vup do
-	version = ENV['VERSION']
-	File.open('lib/barthes/version.rb', 'w') do |f|
-		f.write <<-EOF
-module Barthes
-	VERSION = "#{version}"
-end
-		EOF
+	path = 'lib/barthes/version.rb'
+	if version = ENV['VERSION']
+		file = File.open(path, 'w')
+		file.puts "module Barthes"
+		file.puts "	VERSION = \"#{version}\""
+		file.puts "end"
+		file.close
+		system "git add lib/barthes/version.rb"
+		system "git commit -m 'version up to #{version}'"
+		Rake::Task["release"].invoke
+	else
+		puts File.read(path)
 	end
-	system "git add lib/barthes/version.rb"
-	system "git tag v#{version} -m v#{version}"
-	system "git commit -m 'version up to #{version}'"
-	system "git push origin master"
-	system "git push --tags"
-	system "rake build"
-	system "gem push pkg/barthes-#{version}.gem"
 end
