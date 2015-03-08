@@ -109,12 +109,21 @@ module Barthes
 			env = @env.dup
 			env.update(content['env']) if content['env']
 			@reporter.report(:action, name, action.last, scenarios) do
-				if Barthes::Config[:dryrun] == 0 && !@failed
+				if Barthes::Config[:dryrun] == 0 && !@failed && tagged?(env)
 					content = Action.new(env).action(content)
 					@failed = true if %w(failure error).include?(content['status'])
 				end
+				if !tagged?(env)
+					content['status'] = 'skipped'
+				end
 				content
 			end
+		end
+
+		def tagged?(env)
+			return true if Barthes::Config[:tags].nil?
+			tags = env['tags'] || []
+			flag = (Barthes::Config[:tags] & tags).size > 0
 		end
 	end
 end

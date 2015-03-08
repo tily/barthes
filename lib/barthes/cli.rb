@@ -17,6 +17,7 @@ module Barthes
 			  on 'c', 'cache',     'cache path',                           argument: :optional, default: './barthes-cache.json'
 			  on 'r', 'reporters', 'reporters to use',                     argument: :optional, as: Array
 			  on 'j', 'junit-xml', 'junit xml output path',                argument: :optional
+			  on 'g', 'tags',      'tags to filter actions',               argument: :optional, as: Array
 			end
 			@opt.to_hash
 		end

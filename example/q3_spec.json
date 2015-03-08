@@ -39,7 +39,8 @@
         "MessageBody": "hello barthes"
       },
       "env": {
-        "path": "/*/tilytest"
+        "path": "/*/tilytest",
+        "tags": ["queue"]
       },
       "expectations": [
         {
@@ -53,7 +54,8 @@
         "Action": "ReceiveMessage"
       },
       "env": {
-        "path": "/*/tilytest"
+        "path": "/*/tilytest",
+        "tags": ["queue"]
       },
       "expectations": [
         {
