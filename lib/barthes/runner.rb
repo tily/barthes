@@ -49,22 +49,27 @@ module Barthes
 		end
 
 		def run(paths)
-			files = expand_paths(paths, '_spec.json')
-			results = []
-			@reporter.report(:run, results) do
-				@num = 1
-				files.each do |file|
-					json = JSON.parse File.read(file)
-					@reporter.report(:feature, json[1]) do
-						walk_json(json.last, [file])
-						results << json
-						json
+			begin
+				files = expand_paths(paths, '_spec.json')
+				results = []
+				@reporter.report(:run, results) do
+					@num = 1
+					files.each do |file|
+						json = JSON.parse File.read(file)
+						@reporter.report(:feature, json[1]) do
+							walk_json(json.last, [file])
+							results << json
+							json
+						end
 					end
+					results
 				end
-				results
-			end
-			if !Barthes::Cache.empty?
-				File.write Barthes::Config[:cache], JSON.pretty_generate(Barthes::Cache) + "\n"
+			rescue StandardError => e
+				raise e
+			ensure
+				if !Barthes::Cache.empty?
+					File.write Barthes::Config[:cache], JSON.pretty_generate(Barthes::Cache) + "\n"
+				end
 			end
 			exit @failed ? 1 : 0
 		end
