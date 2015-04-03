@@ -1,0 +1,21 @@
+["feature", "Q3", [
+  ["scenario", "Interrupt", [
+    ["action", "one action", {
+      "params": {
+        "Action": "CreateQueue",
+        "QueueName": "before"
+      },
+      "cache": {
+        "xpath": "//*",
+        "key": "test"
+      }
+    }],
+    ["action", "another action", {
+      "sleep": 10000,
+      "params": {
+        "Action": "CreateQueue",
+        "QueueName": "after"
+      }
+    }]
+  ]]
+]]
