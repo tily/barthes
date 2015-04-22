@@ -126,9 +126,17 @@ module Barthes
 		end
 
 		def tagged?(env)
-			return true if Barthes::Config[:tags].nil?
+			return true if Barthes::Config[:tags].nil? && Barthes::Config[:undo].nil?
 			tags = env['tags'] || []
-			flag = (Barthes::Config[:tags] & tags).size > 0
+			if Barthes::Config[:tags].nil?
+				if (Barthes::Config[:undo] & tags).size > 0
+					flag = false
+				else
+					flag = true
+				end
+			else
+				flag = (Barthes::Config[:tags] & tags).size > 0
+			end
 		end
 	end
 end
