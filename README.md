@@ -2,7 +2,8 @@
 
 ![](600px-Roland_Barthes_signature.svg.png)
 
-TODO: Write a gem description
+Data-driven acceptance test framework.
+See https://github.com/tily/barthes/wiki for Japanese documents.
 
 ## Installation
 
