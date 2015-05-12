@@ -1,6 +1,6 @@
 # Barthes
 
-![](600px-Roland_Barthes_signature.svg.png)
+[![Gem Version](https://badge.fury.io/rb/barthes.svg)](http://badge.fury.io/rb/barthes)
 
 Data-driven acceptance test framework.
 
