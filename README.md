@@ -15,3 +15,13 @@ See https://github.com/tily/barthes/wiki for Japanese documents.
 # Gemfile
 gem "barthes"
 ```
+## How to develop with docker
+
+```
+## Set your environment variables
+$ vi .env
+
+
+## Run barthes command
+$ docker-compose run --rm app ruby bin/barthes
+```
